@@ -1,7 +1,7 @@
 # EBook-WebApp
-> [地址](https://www.baidu.com)
+> [坐标](http://localhost:8080/#/ebook/History|2017_Book_InterdisciplinaryPerspectivesO)
 
-## 第一次commit
+## 第二次commit
 ```
 1.导入字体图标 main.js全局引入
 2.viewport设置和rem设置
@@ -15,6 +15,12 @@
         <link rel="stylesheet" href="<%= BASE_URL %>fonts/daysOne.css">
    Ⅱ main.js中以import的方式引入
 3. 模块化使用vuex
+4. Vue环境变量与模式 .env.development
+    https://cli.vuejs.org/zh/guide/mode-and-env.html#%E6%A8%A1%E5%BC%8F
+5. 语言切换
+6. 主题切换 往head标签动态添加link css样式
+7. 理解mixin 即可利用computed混合getters methods混合action 
+   还可在methods中混合公共方法
 ```
 
 ## 环境配置
@@ -23,9 +29,14 @@
     vue ui中安装
 2.vue中sass编译环境
     cnpm install --save-dev node-sass sass-loader@7.3.1
+    cnpm install node-sass@latest
 3.全局安装vue-devtools
     cnpm install -g @vue/devtools
     vue-devtools运行 记得线上测试把index中script的引入去掉
+4.localstorage工具
+    cnpm i --save web-storage-cache
+5.语言切换
+    cnpm i --save vue-i18n
 ```
 
 ## 填坑
@@ -35,4 +46,6 @@
     getters为对象
     原本getters.hasOwnProperty(key)
     换成Object.prototype.hasOwnProperty.call(getters, key)
+3.epubjs版本过高 无法执行on方法 卸载 重装
+    cnpm install epubjs@0.3.71
 ```
