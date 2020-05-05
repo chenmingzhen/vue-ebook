@@ -44,6 +44,12 @@
           e.preventDefault();
           e.stopPropagation();
         });
+        this.book.ready.then(() => {
+          return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16));
+        }).then(locations => {
+
+        });
+        this.setBookAvailable(true);
       },
       prevPage() {
         if (this.rendition) {

@@ -19,6 +19,7 @@
     <ebook-setting-font></ebook-setting-font>
     <ebook-setting-font-popup></ebook-setting-font-popup>
     <ebook-setting-theme></ebook-setting-theme>
+    <ebook-setting-progress></ebook-setting-progress>
   </div>
 </template>
 
@@ -27,6 +28,7 @@
   import EbookSettingFont from './EbookSettingFont';
   import EbookSettingFontPopup from './EbookSettingFontPopup';
   import EbookSettingTheme from './EbookSettingTheme';
+  import EbookSettingProgress from './EbookSettingProgress';
   export default {
     name: 'EbookMenu',
     methods: {
@@ -38,7 +40,8 @@
     components: {
       EbookSettingFont,
       EbookSettingFontPopup,
-      EbookSettingTheme
+      EbookSettingTheme,
+      EbookSettingProgress
     }
   };
 </script>
