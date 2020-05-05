@@ -23,7 +23,8 @@
     mixins: [ebookMixin],
     methods: {
       initEpub() {
-        const url = 'http://192.168.1.102:8081/epub/' + this.fileName + '.epub';
+        // const url = 'http://192.168.1.104:8081/epub/' + this.fileName + '.epub';
+        const url = `${process.env.VUE_APP_RES_URL}/epub/${this.fileName}.epub`;
         this.book = new Epub(url);
         this.setCurrentBook(this.book);
         this.initRendition();
@@ -47,9 +48,10 @@
         this.book.ready.then(() => {
           return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16));
         }).then(locations => {
-
+          // 做好分页再调用一次
+          this.refreshLocation();
+          this.setBookAvailable(true);
         });
-        this.setBookAvailable(true);
       },
       prevPage() {
         if (this.rendition) {
@@ -85,7 +87,8 @@
           height: innerHeight,
           method: 'default'
         });
-        this.rendition.display().then(() => {
+        const location = getLocation(this.fileName);
+        this.display(location, () => {
           this.initFontFamily();
           this.initFontSize();
           this.initTheme();
