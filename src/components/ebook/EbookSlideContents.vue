@@ -6,7 +6,7 @@
           <span class="icon-search"></span>
         </div>
         <input type="text" class="slide-contents-search-input" :placeholder="$t('book.searchHint')"
-               v-model="searchText" @click="showSearchPage">
+               v-model="searchText" @click="showSearchPage" @keyup.enter.exact="search()">
       </div>
       <div class="slide-contents-search-cancel" v-if="searchVisible" @click="hideSearchPage()">{{$t('book.cancel')}}
       </div>
@@ -31,13 +31,23 @@
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
     </div>
-    <scroll class="slide-contents-list" :top="104" :bottom="32">
+    <scroll class="slide-contents-list" :top="104" :bottom="32" v-show="!searchVisible">
       <div class="slide-contents-item" v-for="(item,index) in navigation" :key="index">
         <span class="slide-contents-item-label" :class="{'selected':section===index}" :style="contentItemStyle(item)"
               @click="displayContent(item.href)">
           {{item.label}}
         </span>
         <span class="slide-contents-item-page">{{item.page}}</span>
+      </div>
+    </scroll>
+    <scroll :top="46.927" :bottom="32"
+            v-show="searchVisible"
+            class="slide-search-list"
+        >
+      <div class="slide-search-item"
+           v-for="(item,index) in searchList"
+           :key="index" v-html="item.excerpt"
+           @click="displayContent(item.cfi, true)">
       </div>
     </scroll>
   </div>
@@ -66,7 +76,9 @@
         this.searchVisible = true;
       },
       hideSearchPage() {
-
+        this.searchVisible = false;
+        this.searchText = '';
+        this.searchList = null;
       },
       contentItemStyle(item) {
         return {
@@ -80,7 +92,29 @@
             this.currentBook.rendition.annotations.highlight(target);
           }
         });
+      },
+      search() {
+        if (this.searchText && this.searchText.length > 0) {
+          this.doSearch(this.searchText).then(list => {
+            this.searchList = list;
+            this.searchList.map(item => {
+              // 搜索出的内容 做高亮
+              item.excerpt = item.excerpt.replace(this.searchText, `<span class="content-search-text">${this.searchText}</span>`);
+              return item;
+            });
+          });
+        }
+      },
+      // 官方提供查找方法
+      doSearch(q) {
+        return Promise.all(
+          this.currentBook.spine.spineItems.map(
+            section => section.load(this.currentBook.load.bind(this.currentBook))
+              .then(section.find.bind(section, q))
+              .finally(section.unload.bind(section)))
+        ).then(results => Promise.resolve([].concat.apply([], results)));
       }
+
     }
   };
 </script>
@@ -201,21 +235,35 @@
     .slide-contents-list {
       padding: 0 0.4rem;
       box-sizing: border-box;
+
       .slide-contents-item {
         display: flex;
         padding: 0.533rem 0;
         box-sizing: border-box;
-        .slide-contents-item-label{
+
+        .slide-contents-item-label {
           flex: 1;
           font-size: 0.373rem;
           line-height: 0.427rem;
           @include ellipsis;
         }
-        .slide-contents-item-page{
+
+        .slide-contents-item-page {
           flex: 0 0 0.8rem;
           font-size: 0.267rem;
           @include right;
         }
+      }
+    }
+    .slide-search-list {
+      width: 100%;
+      padding: 0 0.4rem;
+      box-sizing: border-box;
+      .slide-search-item {
+        font-size: 0.373rem;
+        line-height: 0.427rem;
+        padding: 0.533rem 0;
+        box-sizing: border-box;
       }
     }
   }
