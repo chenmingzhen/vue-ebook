@@ -28,6 +28,7 @@
         this.book = new Epub(url);
         this.setCurrentBook(this.book);
         this.initRendition();
+        this.parseBook();
         this.rendition.on('touchstart', e => {
           this.touchStartX = e.changedTouches[0].clientX;
           this.touchStartTime = e.timeStamp;
@@ -72,14 +73,6 @@
           this.setFontFamilyVisible(false);
         }
         this.setMenuVisible(!this.menuVisible);
-      },
-      hideTitleAndMenu() {
-        // this.$store.dispatch('setMenuVisible', false);
-        if (this.menuVisible) {
-          this.setSettingVisible(-1);
-          this.setFontFamilyVisible(false);
-        }
-        this.setMenuVisible(false);
       },
       initRendition() {
         this.rendition = this.book.renderTo('book', {
@@ -137,6 +130,17 @@
           this.rendition.themes.register(theme.name, theme.style);
         });
         this.rendition.themes.select(defaultTheme);
+      },
+      // 解析出书籍的图片 标题作者
+      parseBook() {
+        this.book.loaded.cover.then(cover => {
+          this.book.archive.createUrl(cover).then(url => {
+            this.setCover(url);
+          });
+        });
+        this.book.loaded.metadata.then(metadata => {
+          this.setMetadata(metadata);
+        });
       }
     },
     mounted() {

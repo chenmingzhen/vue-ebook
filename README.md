@@ -21,6 +21,8 @@
 6. 主题切换 往head标签动态添加link css样式
 7. 理解mixin 即可利用computed混合getters methods混合action 
    还可在methods中混合公共方法
+8. 动画叠加 目录展开
+9. vue component :is实现多个组件之间的切换
 ```
 
 ## 环境配置
@@ -48,4 +50,9 @@
     换成Object.prototype.hasOwnProperty.call(getters, key)
 3.epubjs版本过高 无法执行on方法 卸载 重装
     cnpm install epubjs@0.3.71
+```
+
+TODO
+```
+1. 目录增加向左滑关闭目录功能 原理跟reader的滑动基本一致
 ```

@@ -95,6 +95,13 @@ export const ebookMixin = {
     },
     getReadTimeText() {
       return this.$t('book.haveRead').replace('$1', getReadTimeByMinute(this.fileName));
+    },
+    hideTitleAndMenu() {
+      if (this.menuVisible) {
+        this.setSettingVisible(-1);
+        this.setFontFamilyVisible(false);
+      }
+      this.setMenuVisible(false);
     }
   }
 };
