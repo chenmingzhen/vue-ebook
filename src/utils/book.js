@@ -94,3 +94,37 @@ export function getReadTimeByMinute(fileName) {
     return Math.ceil(readTime / 60);
   }
 }
+
+/* 传入
+* const navtest = [{
+            id: 1,
+            subitems: [{
+              id: 2,
+              subitems: [
+                {
+                  id: 3,
+                  subitems: []
+                },
+                {
+                  id: 4,
+                  subitems: []
+                }
+              ]
+            }, {
+              id: 5,
+              subitems: []
+            }]
+          }, {
+            id: 6,
+            subitems: []
+          }]; */
+// 返回
+/* 0: {id: 1, subitems: Array(2)}
+1: {id: 2, subitems: Array(2)}
+2: {id: 3, subitems: Array(0)}
+3: {id: 4, subitems: Array(0)}
+4: {id: 5, subitems: Array(0)}
+5: {id: 6, subitems: Array(0)}  */
+export function flatten(array) {
+  return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))));
+}

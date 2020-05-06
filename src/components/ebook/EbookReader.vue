@@ -16,6 +16,7 @@
     saveTheme,
     getLocation
   } from '../../utils/localStorage';
+  import { flatten } from '../../utils/book';
 
   global.ePub = Epub;
   export default {
@@ -140,6 +141,18 @@
         });
         this.book.loaded.metadata.then(metadata => {
           this.setMetadata(metadata);
+        });
+        this.book.loaded.navigation.then(nav => {
+          const navItem = flatten(nav.toc);
+          // console.log(navItem);
+          function find(item, level = 0) {
+            return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level);
+          }
+          // 找到每个nav所属的目录级别
+          navItem.forEach(item => {
+            item.level = find(item);
+          });
+          this.setNavigation(navItem);
         });
       }
     },

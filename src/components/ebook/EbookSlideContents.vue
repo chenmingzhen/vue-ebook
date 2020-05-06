@@ -31,19 +31,34 @@
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
     </div>
+    <scroll class="slide-contents-list" :top="104" :bottom="32">
+      <div class="slide-contents-item" v-for="(item,index) in navigation" :key="index">
+        <span class="slide-contents-item-label" :class="{'selected':section===index}" :style="contentItemStyle(item)"
+              @click="displayContent(item.href)">
+          {{item.label}}
+        </span>
+        <span class="slide-contents-item-page">{{item.page}}</span>
+      </div>
+    </scroll>
   </div>
 </template>
 
 <script>
   import { ebookMixin } from '../../utils/mixin';
+  import Scroll from '../../components/common/scroll';
+  import { px2rem } from '../../utils/utils';
 
   export default {
     name: 'EbookSlideContents',
     mixins: [ebookMixin],
+    components: {
+      Scroll
+    },
     data() {
       return {
         searchVisible: false,
-        searchText: ''
+        searchText: '',
+        searchList: null
       };
     },
     methods: {
@@ -52,6 +67,19 @@
       },
       hideSearchPage() {
 
+      },
+      contentItemStyle(item) {
+        return {
+          marginLeft: `${px2rem(item.level * 15)}rem`
+        };
+      },
+      displayContent(target, highlight = false) {
+        this.display(target, () => {
+          this.hideTitleAndMenu();
+          if (highlight) {
+            this.currentBook.rendition.annotations.highlight(target);
+          }
+        });
       }
     }
   };
@@ -102,58 +130,91 @@
         @include right
       }
     }
-    .slide-contents-book-wrapper{
+
+    .slide-contents-book-wrapper {
       display: flex;
       width: 100%;
       height: 2.4rem;
       padding: 0.267rem 0.4rem 0.533rem 0.4rem;
       box-sizing: border-box;
-      .slide-contents-book-img-wrapper{
+
+      .slide-contents-book-img-wrapper {
         flex: 0 0 1.2rem;
-        .slide-contents-book-img{
+
+        .slide-contents-book-img {
           width: 1.2rem;
           height: 1.6rem;
         }
       }
-      .slide-contents-book-info-wrapper{
+
+      .slide-contents-book-info-wrapper {
         flex: 1;
         padding: 0 0.267rem;
         box-sizing: border-box;
-        .slide-contents-book-title{
+
+        .slide-contents-book-title {
           font-size: 0.373rem;
           line-height: 0.427rem;
           @include left;
-          .slide-contents-book-title-text{
-              @include ellipsis2(3);
+
+          .slide-contents-book-title-text {
+            @include ellipsis2(3);
           }
         }
-        .slide-contents-book-author{
+
+        .slide-contents-book-author {
           font-size: 0.32rem;
           line-height: 0.427rem;
           margin-top: 0.133rem;
           @include left;
-          .slide-contents-book-author-text{
+
+          .slide-contents-book-author-text {
             @include ellipsis2(1);
           }
         }
       }
-      .slide-contents-book-progress-wrapper{
+
+      .slide-contents-book-progress-wrapper {
         flex: 0 0 3.2rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        .slide-contents-book-progress{
-          .progress{
+
+        .slide-contents-book-progress {
+          .progress {
             font-size: 0.213rem;
           }
-          .progress-text{
+
+          .progress-text {
             font-size: 0.213rem;
           }
         }
-        .slide-contents-book-time{
+
+        .slide-contents-book-time {
           font-size: 0.213rem;
           margin-top: 0.133rem;
+        }
+      }
+    }
+
+    .slide-contents-list {
+      padding: 0 0.4rem;
+      box-sizing: border-box;
+      .slide-contents-item {
+        display: flex;
+        padding: 0.533rem 0;
+        box-sizing: border-box;
+        .slide-contents-item-label{
+          flex: 1;
+          font-size: 0.373rem;
+          line-height: 0.427rem;
+          @include ellipsis;
+        }
+        .slide-contents-item-page{
+          flex: 0 0 0.8rem;
+          font-size: 0.267rem;
+          @include right;
         }
       }
     }

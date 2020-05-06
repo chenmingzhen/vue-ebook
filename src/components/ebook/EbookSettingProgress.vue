@@ -35,13 +35,14 @@
     mixins: [ebookMixin],
     computed: {
       getSectionName() {
-        if (this.section) {
+        /* if (this.section) {
           const sectionInfo = this.currentBook.section(this.section);
           if (sectionInfo && sectionInfo.href) {
             return this.currentBook.navigation.get(sectionInfo.href).label;
           }
         }
-        return '';
+        return ''; */
+        return this.section ? this.navigation[this.section].label : '';
       }
     },
     methods: {
