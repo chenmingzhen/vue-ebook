@@ -75,6 +75,7 @@
         if (!this.menuVisible && this.bookAvailable) {
           if (v > 0) {
             // 向下拉动屏幕时，调用move方法
+            // && this.$refs.ebook.style.top.split('px')[0] <= 100
             this.move(v);
           } else if (v === 0) {
             // y轴为0时，调用restore方法让屏幕回弹，松手时屏幕是无法自动回弹的，必须自己实现

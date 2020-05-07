@@ -21,6 +21,7 @@
   const BLUE = '#346cbc';
   export default {
     name: 'EbookBookmark',
+    mixins: [ebookMixin],
     components: {
       Bookmark
     },
@@ -28,38 +29,139 @@
       return {
         text: '',
         color: WHITE,
+        // 判断书签是否是fix
         isFixed: false
       };
+    },
+    computed: {
+      height() {
+        return realPx(35);
+      },
+      // 临界条件
+      threshold() {
+        return realPx(55);
+      },
+      fixedStyle() {
+        return {
+          position: 'fixed',
+          top: 0,
+          right: `${(window.innerWidth - this.$refs.bookmark.clientWidth) / 2}px`
+        };
+      }
+    },
+    watch: {
+      offsetY(v) {
+        if (!this.bookAvailable || this.menuVisible || this.settingVisible >= 0) {
+          return;
+        }
+        if (v >= this.height && v < this.threshold) {
+          this.beforeThreshold(v);
+        } else if (v >= this.threshold) {
+          this.afterThreshold(v);
+        } else if (v > 0 && v < this.height) {
+          this.beforeHeight();
+        } else if (v === 0) {
+          this.restore();
+        }
+      }
+    },
+    methods: {
+      // 状态1：未超过书签的高度
+      beforeHeight() {
+        if (this.isBookmark) {
+          this.text = this.$t('book.pulldownDeleteMark');
+          this.color = BLUE;
+          this.isFixed = true;
+        } else {
+          this.text = this.$t('book.pulldownAddMark');
+          this.color = WHITE;
+          this.isFixed = false;
+        }
+      },
+      // 状态2：未到达零界状态
+      beforeThreshold(v) {
+        // 书签反向移动 肉眼吸附顶端效果
+        this.$refs.bookmark.style.top = `${-v}px`;
+        this.beforeHeight();
+        const iconDown = this.$refs.iconDown;
+        // 旋转箭头
+        if (iconDown.style.transform === 'rotate(180deg)') {
+          iconDown.style.transform = 'rotate(0deg)';
+        }
+      },
+      // 状态3：超越零界状态
+      afterThreshold(v) {
+        this.$refs.bookmark.style.top = `${-v}px`;
+        if (this.isBookmark) {
+          this.text = this.$t('book.releaseDeleteMark');
+          this.color = WHITE;
+          this.isFixed = false;
+        } else {
+          this.text = this.$t('book.releaseAddMark');
+          this.color = BLUE;
+          this.isFixed = true;
+        }
+        // 箭头旋转动画
+        const iconDown = this.$refs.iconDown;
+        if (iconDown.style.transform === '' ||
+          iconDown.style.transform === 'rotate(0deg)') {
+          iconDown.style.transform = 'rotate(180deg)';
+        }
+      },
+      // 状态4：归位
+      restore() {
+        setTimeout(() => {
+          this.$refs.bookmark.style.top = `${-this.height}px`;
+          this.$refs.iconDown.style.transform = 'rotate(0deg)';
+        }, 200);
+        if (this.isFixed) {
+          this.setIsBookmark(true);
+        } else {
+          this.setIsBookmark(false);
+        }
+      },
+      addBookmark() {
+
+      },
+      removeBookmark() {
+
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
-  .ebook-bookmark{
+
+  .ebook-bookmark {
     position: absolute;
     top: -0.933rem;
     left: 0;
     z-index: 200;
     width: 100%;
     height: 0.933rem;
-    .ebook-bookmark-text-wrapper{
+
+    .ebook-bookmark-text-wrapper {
       position: absolute;
       right: 1.2rem;
       bottom: 0;
       display: flex;
+
       .ebook-bookmark-down-wrapper {
         font-size: 0.96rem;
         color: white;
         transition: all .2s linear;
         @include center;
       }
+
       .ebook-bookmark-text {
         font-size: 0.373rem;
         color: white;
+        @include center;
       }
     }
-    .ebook-bookmark-icon-wrapper{
+
+    .ebook-bookmark-icon-wrapper {
       position: absolute;
       right: 0;
       bottom: 0;
