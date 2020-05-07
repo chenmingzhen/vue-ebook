@@ -5,6 +5,8 @@
     <!-- 阅读器渲染组件 -->
     <ebook-reader></ebook-reader>
     <ebook-menu></ebook-menu>
+    <!-- 阅读器书签组件 -->
+    <ebook-bookmark></ebook-bookmark>
   </div>
 </template>
 
@@ -14,6 +16,7 @@
   import EbookMenu from '../../components/ebook/EbookMenu';
   import { getReadTime, saveReadTime } from '../../utils/localStorage';
   import { ebookMixin } from '../../utils/mixin';
+  import EbookBookmark from '../../components/ebook/EbookBookmark';
 
   export default {
     name: 'index',
@@ -21,7 +24,8 @@
     components: {
       EbookReader,
       EbookTitle,
-      EbookMenu
+      EbookMenu,
+      EbookBookmark
     },
     methods: {
       startLoopReadTime() {
@@ -41,7 +45,6 @@
       move(v) {
         // 向下拉动屏幕时，组件随之移动
         this.$refs.ebook.style.top = v + 'px';
-        console.log(this.$refs.ebook.style.top);
       },
       restore() {
         // 将组件还原回原位
@@ -69,7 +72,7 @@
       offsetY(v) {
         // 判断如果菜单栏没有处于显示状态（如果菜单栏显示，优先响应菜单栏事件）
         // 并且电子书已经解析完毕（未解析完毕时无法获取currentLocation）
-        if (this.bookAvailable) {
+        if (!this.menuVisible && this.bookAvailable) {
           if (v > 0) {
             // 向下拉动屏幕时，调用move方法
             this.move(v);
