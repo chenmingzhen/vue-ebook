@@ -2,6 +2,7 @@
   <div class="ebook-reader">
     <div id="book">
     </div>
+    <div class="ebook-reader-mask" @click="onMaskClick" @touchmove="move" @touchend="moveEnd"/>
   </div>
 </template>
 <script>
@@ -30,23 +31,6 @@
         this.setCurrentBook(this.book);
         this.initRendition();
         this.parseBook();
-        this.rendition.on('touchstart', e => {
-          this.touchStartX = e.changedTouches[0].clientX;
-          this.touchStartTime = e.timeStamp;
-        });
-        this.rendition.on('touchend', e => {
-          const offsetX = e.changedTouches[0].clientX - this.touchStartX;
-          const time = e.timeStamp - this.touchStartTime;
-          if (time < 500 && offsetX > 40) {
-            this.prevPage();
-          } else if (time < 500 && offsetX < -40) {
-            this.nextPage();
-          } else {
-            this.toggleTitleAndMenu();
-          }
-          e.preventDefault();
-          e.stopPropagation();
-        });
         this.book.ready.then(() => {
           return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16));
         }).then(locations => {
@@ -154,6 +138,32 @@
           });
           this.setNavigation(navItem);
         });
+      },
+      onMaskClick(e) {
+        const offsetX = e.offsetX;
+        const width = window.innerWidth;
+        if (offsetX > 0 && offsetX < width * 0.3) {
+          this.prevPage();
+        } else if (offsetX > 0 && offsetX > width * 0.7) {
+          this.nextPage();
+        } else {
+          this.toggleTitleAndMenu();
+        }
+      },
+      move(e) {
+        let offSetY = 0;
+        if (this.firstOffsetY) {
+          offSetY = e.changedTouches[0].clientY - this.firstOffsetY;
+          this.setOffsetY(offSetY);
+        } else {
+          this.firstOffsetY = e.changedTouches[0].clientY;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      moveEnd(e) {
+        this.setOffsetY(0);
+        this.firstOffsetY = null;
       }
     },
     mounted() {
@@ -167,6 +177,20 @@
   };
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  @import "../../assets/styles/global";
+  .ebook-reader{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .ebook-reader-mask{
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: transparent;
+      z-index: 150;
+      width: 100%;
+      height: 100%;
+    }
+  }
 </style>
