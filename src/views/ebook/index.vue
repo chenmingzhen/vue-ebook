@@ -1,5 +1,7 @@
 <template>
   <div class="ebook" ref="ebook">
+    <!-- 电子书页眉组件 -->
+    <ebook-header></ebook-header>
     <!-- 阅读器标题组件 -->
     <ebook-title></ebook-title>
     <!-- 阅读器渲染组件 -->
@@ -7,6 +9,8 @@
     <ebook-menu></ebook-menu>
     <!-- 阅读器书签组件 -->
     <ebook-bookmark></ebook-bookmark>
+    <!-- 电子书页脚组件 -->
+    <ebook-footer></ebook-footer>
   </div>
 </template>
 
@@ -17,6 +21,8 @@
   import { getReadTime, saveReadTime } from '../../utils/localStorage';
   import { ebookMixin } from '../../utils/mixin';
   import EbookBookmark from '../../components/ebook/EbookBookmark';
+  import EbookHeader from '../../components/ebook/EbookHeader';
+  import EbookFooter from '../../components/ebook/EbookFooter';
 
   export default {
     name: 'index',
@@ -25,7 +31,9 @@
       EbookReader,
       EbookTitle,
       EbookMenu,
-      EbookBookmark
+      EbookBookmark,
+      EbookHeader,
+      EbookFooter
     },
     methods: {
       startLoopReadTime() {

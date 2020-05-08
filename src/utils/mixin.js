@@ -28,6 +28,9 @@ export const ebookMixin = {
     // 全局返回themeList
     themeList() {
       return themeList(this);
+    },
+    getSectionName() {
+      return this.section ? this.navigation[this.section].label : '';
     }
   },
   methods: {
