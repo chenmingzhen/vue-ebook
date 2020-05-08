@@ -1,5 +1,5 @@
 <template>
-  <div class="search-bar" :class="{'hide-title':!titleVisible}" >
+  <div class="search-bar" :class="{'hide-title':!titleVisible,'hide-shadow':!shadowVisible}" >
     <transition name="title-move">
       <div class="search-bar-title-wrapper" v-show="titleVisible">
         <div class="title-text-wrapper">
@@ -10,10 +10,12 @@
         </div>
       </div>
     </transition>
-    <div class="title-icon-back-wrapper">
+    <div class="title-icon-back-wrapper"  :class="{'hide-title':!titleVisible}">
       <span class="icon-back icon"></span>
     </div>
     <div class="search-bar-input-wrapper" :class="{'hide-title':!titleVisible}">
+      <!--占位div-->
+      <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
       <div class="search-bar-input">
         <span class="icon-search icon"></span>
         <input type="text" class="input" :placeholder="$t('home.hint')">
@@ -29,17 +31,19 @@
     mixins: [storeHomeMixin],
     data() {
       return {
-        titleVisible: true
+        titleVisible: true,
+        shadowVisible: false,
+        searchText: ''
       };
     },
     watch: {
       offsetY(offsetY) {
         if (offsetY > 0) {
-          console.log(offsetY);
           this.hideTitle();
+          this.showShadow();
         } else {
-          console.log(offsetY);
           this.showTitle();
+          this.hideShadow();
         }
       }
     },
@@ -49,6 +53,12 @@
       },
       showTitle() {
         this.titleVisible = true;
+      },
+      hideShadow() {
+        this.shadowVisible = false;
+      },
+      showShadow() {
+        this.shadowVisible = true;
       }
     }
   };
@@ -65,6 +75,9 @@
     box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
     &.hide-title {
       height: 1.387rem;
+    }
+    &.hide-shadow{
+      box-shadow: none;
     }
     .search-bar-title-wrapper {
       position: absolute;
@@ -92,7 +105,8 @@
       position: absolute;
       left: 0.4rem;
       top: 0;
-      // z-index: 200;
+      z-index: 200;
+      transition: height $animationTime $animationType;
       height: 1.12rem;
       @include center;
       &.hide-title {
@@ -109,9 +123,19 @@
       height: 1.387rem;
       padding: 0.267rem;
       box-sizing: border-box;
-      transition: top .2s;
+      transition:  top $animationTime $animationType;
       &.hide-title {
        top:0;
+      }
+      .search-bar-blank{
+        // 利用flex实现搜索框变窄
+        flex: 0 0 0;
+        width: 0;
+        transition: all $animationTime $animationType;
+        &.hide-title{
+          flex: 0 0 0.827rem;
+          width: 0.827rem;
+        }
       }
 
       .search-bar-input {
