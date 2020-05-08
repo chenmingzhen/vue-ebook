@@ -189,6 +189,7 @@
         .slide-contents-book-title {
           font-size: 0.373rem;
           line-height: 0.427rem;
+          // 利用flex布局 解决PC端 文字显示不全
           @include left;
 
           .slide-contents-book-title-text {

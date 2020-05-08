@@ -2,7 +2,13 @@
   <div class="ebook-reader">
     <div id="book">
     </div>
-    <div class="ebook-reader-mask" @click="onMaskClick" @touchmove="move" @touchend="moveEnd"/>
+    <div class="ebook-reader-mask"
+         @click="onMaskClick"
+         @touchmove="move"
+         @touchend="moveEnd"
+         @mousedown.left="onMouseEnter"
+         @mousemove.left="onMouseMove"
+         @mouseup.left="onMouseEnd"/>
   </div>
 </template>
 <script>
@@ -128,10 +134,12 @@
         });
         this.book.loaded.navigation.then(nav => {
           const navItem = flatten(nav.toc);
+
           // console.log(navItem);
           function find(item, level = 0) {
             return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level);
           }
+
           // 找到每个nav所属的目录级别
           navItem.forEach(item => {
             item.level = find(item);
@@ -140,6 +148,9 @@
         });
       },
       onMaskClick(e) {
+        if (this.mouseState && (this.mouseState === 2 || this.mouseState === 3)) {
+          return;
+        }
         const offsetX = e.offsetX;
         const width = window.innerWidth;
         if (offsetX > 0 && offsetX < width * 0.3) {
@@ -166,6 +177,46 @@
       moveEnd(e) {
         this.setOffsetY(0);
         this.firstOffsetY = null;
+      },
+      // 1 - 鼠标进入
+      // 2 - 鼠标进入后的移动
+      // 3 - 鼠标从移动状态松手
+      // 4 - 鼠标还原
+      onMouseEnter(e) {
+        this.mouseState = 1;
+        this.mouseStartTime = e.timeStamp;
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      onMouseMove(e) {
+        if (this.mouseState === 1) {
+          this.mouseState = 2;
+        } else if (this.mouseState === 2) {
+          let offsetY = 0;
+          if (this.firstOffsetY) {
+            offsetY = e.clientY - this.firstOffsetY;
+            this.setOffsetY(offsetY);
+          } else {
+            this.firstOffsetY = e.clientY;
+          }
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      onMouseEnd(e) {
+        if (this.mouseState === 2) {
+          this.setOffsetY(0);
+          this.firstOffsetY = null;
+          this.mouseState = 3;
+        } else {
+          this.mouseState = 4;
+        }
+        const time = e.timeStamp - this.mouseStartTime;
+        if (time < 100) {
+          this.mouseState = 4;
+        }
+        e.preventDefault();
+        e.stopPropagation();
       }
     },
     mounted() {
@@ -181,11 +232,13 @@
 
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
-  .ebook-reader{
+
+  .ebook-reader {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    .ebook-reader-mask{
+
+    .ebook-reader-mask {
       position: absolute;
       top: 0;
       left: 0;
