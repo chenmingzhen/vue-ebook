@@ -158,7 +158,9 @@
         } else {
           this.firstOffsetY = e.changedTouches[0].clientY;
         }
+        // 解决微信下拉出现本网页由XXX提供
         e.preventDefault();
+
         e.stopPropagation();
       },
       moveEnd(e) {
