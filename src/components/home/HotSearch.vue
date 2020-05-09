@@ -76,7 +76,7 @@
       }
       .hot-search-text-wrapper{
         flex: 1;
-        height: 0.933rem;
+        height: 1rem;
         @include columnLeft;
         .text{
           flex: 1;

@@ -1,7 +1,7 @@
 <template>
   <transition name="hot-search-move">
     <scroll class="hot-search-wrapper"
-            :top="52"
+            :top="35"
             @onScroll="onScroll"
             ref="scroll">
       <hot-search :label="$t('home.hotSearch')"

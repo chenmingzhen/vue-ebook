@@ -11,7 +11,7 @@
           </div>
         </div>
       </transition>
-      <div class="title-icon-back-wrapper" :class="{'hide-title':!titleVisible}">
+      <div class="title-icon-back-wrapper" :class="{'hide-title':!titleVisible}" @click="back">
         <span class="icon-back icon"></span>
       </div>
       <div class="search-bar-input-wrapper" :class="{'hide-title':!titleVisible}">
@@ -19,17 +19,18 @@
         <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
         <div class="search-bar-input">
           <span class="icon-search icon"></span>
-          <input type="text" class="input" :placeholder="$t('home.hint')">
+          <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText" @click="showHotSearch">
         </div>
       </div>
     </div>
-    <hot-search-list></hot-search-list>
+    <hot-search-list v-show="hotSearchVisible" ref="hotSearch"></hot-search-list>
   </div>
 </template>
 
 <script>
   import { storeHomeMixin } from '../../utils/mixin';
   import HotSearchList from './HotSearchList';
+
   export default {
     name: 'SearchBar',
     components: {
@@ -40,7 +41,8 @@
       return {
         titleVisible: true,
         shadowVisible: false,
-        searchText: ''
+        searchText: '',
+        hotSearchVisible: false
       };
     },
     watch: {
@@ -66,6 +68,39 @@
       },
       showShadow() {
         this.shadowVisible = true;
+      },
+      showHotSearch() {
+        this.hideTitle();
+        this.hideShadow();
+        this.hotSearchVisible = true;
+        this.$nextTick(() => {
+          /*
+          * Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。
+          * $nextTick 是在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后使用 $nextTick，则可以在回调中获取更新后的 DOM，
+          *  */
+          // 因为上面的操作dom没有立即更新 而这里的操作是要等dom更新的 需要等dom更新再执行
+          this.$refs.hotSearch.reset();
+        });
+      },
+      hideHotSearch() {
+        this.hotSearchVisible = false;
+        if (this.offsetY > 0) {
+          this.hideTitle();
+          this.showShadow();
+        } else {
+          this.showTitle();
+          this.hideShadow();
+        }
+      },
+      back() {
+        if (this.offsetY > 0) {
+          this.showShadow();
+        } else {
+          this.hideShadow();
+        }
+        if (this.hotSearchVisible) {
+          this.hideHotSearch();
+        }
       }
     }
   };
