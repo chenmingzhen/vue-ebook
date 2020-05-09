@@ -1,33 +1,40 @@
 <template>
-  <div class="search-bar" :class="{'hide-title':!titleVisible,'hide-shadow':!shadowVisible}" >
-    <transition name="title-move">
-      <div class="search-bar-title-wrapper" v-show="titleVisible">
-        <div class="title-text-wrapper">
-          <span class="title-text title">{{$t('home.title')}}</span>
+  <div>
+    <div class="search-bar" :class="{'hide-title':!titleVisible,'hide-shadow':!shadowVisible}">
+      <transition name="title-move">
+        <div class="search-bar-title-wrapper" v-show="titleVisible">
+          <div class="title-text-wrapper">
+            <span class="title-text title">{{$t('home.title')}}</span>
+          </div>
+          <div class="title-icon-shake-wrapper">
+            <span class="icon-shake icon"></span>
+          </div>
         </div>
-        <div class="title-icon-shake-wrapper">
-          <span class="icon-shake icon"></span>
+      </transition>
+      <div class="title-icon-back-wrapper" :class="{'hide-title':!titleVisible}">
+        <span class="icon-back icon"></span>
+      </div>
+      <div class="search-bar-input-wrapper" :class="{'hide-title':!titleVisible}">
+        <!--占位div-->
+        <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
+        <div class="search-bar-input">
+          <span class="icon-search icon"></span>
+          <input type="text" class="input" :placeholder="$t('home.hint')">
         </div>
       </div>
-    </transition>
-    <div class="title-icon-back-wrapper"  :class="{'hide-title':!titleVisible}">
-      <span class="icon-back icon"></span>
     </div>
-    <div class="search-bar-input-wrapper" :class="{'hide-title':!titleVisible}">
-      <!--占位div-->
-      <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
-      <div class="search-bar-input">
-        <span class="icon-search icon"></span>
-        <input type="text" class="input" :placeholder="$t('home.hint')">
-      </div>
-    </div>
+    <hot-search-list></hot-search-list>
   </div>
 </template>
 
 <script>
   import { storeHomeMixin } from '../../utils/mixin';
+  import HotSearchList from './HotSearchList';
   export default {
     name: 'SearchBar',
+    components: {
+      HotSearchList
+    },
     mixins: [storeHomeMixin],
     data() {
       return {
@@ -73,12 +80,15 @@
     width: 100%;
     height: 2.507rem;
     box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+
     &.hide-title {
       height: 1.387rem;
     }
-    &.hide-shadow{
+
+    &.hide-shadow {
       box-shadow: none;
     }
+
     .search-bar-title-wrapper {
       position: absolute;
       top: 0;
@@ -109,6 +119,7 @@
       transition: height $animationTime $animationType;
       height: 1.12rem;
       @include center;
+
       &.hide-title {
         height: 1.387rem;
       }
@@ -123,16 +134,19 @@
       height: 1.387rem;
       padding: 0.267rem;
       box-sizing: border-box;
-      transition:  top $animationTime $animationType;
+      transition: top $animationTime $animationType;
+
       &.hide-title {
-       top:0;
+        top: 0;
       }
-      .search-bar-blank{
+
+      .search-bar-blank {
         // 利用flex实现搜索框变窄
         flex: 0 0 0;
         width: 0;
         transition: all $animationTime $animationType;
-        &.hide-title{
+
+        &.hide-title {
           flex: 0 0 0.827rem;
           width: 0.827rem;
         }
