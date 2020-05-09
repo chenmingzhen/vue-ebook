@@ -34,6 +34,7 @@
       <div>111111</div>
       <div>111111</div>
     </scroll>
+    <flap-card></flap-card>
   </div>
 </template>
 
@@ -41,13 +42,14 @@
   import SearchBar from '../../components/home/SearchBar';
   import scroll from '../../components/common/scroll';
   import { storeHomeMixin } from '../../utils/mixin';
-
+  import FlapCard from '../../components/home/FlapCard';
   export default {
     name: 'StoreHome',
     mixins: [storeHomeMixin],
     components: {
       SearchBar,
-      scroll
+      scroll,
+      FlapCard
     },
     data() {
       return {
