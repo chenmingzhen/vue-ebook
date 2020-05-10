@@ -128,6 +128,12 @@
         this.cardTask = setInterval(() => {
           this.flapCardRotate();
         }, this.intervalTime);
+        setTimeout(() => {
+          this.runFlapCardAnimation = false;
+          if (this.cardTask) {
+            clearInterval(this.cardTask);
+          }
+        }, 2500);
       },
       stopAnimation() {
         // 清除动画的计时器
@@ -219,7 +225,12 @@
       height: 1.707rem;
       border-radius: 0.133rem;
       background: white;
+      // 作为默认值 初始状态
+      transform: scale(0);
+      opacity: 0;
       &.animation{
+        // both的作用是 动画结束后 保持在动画结束的最后的一个状态
+        // 这样就不会回到初始状态 transform scale 0 opacity 0 停在100%的状态了
         animation: flap-card-move .3s ease-in both;
       }
       @keyframes flap-card-move {
