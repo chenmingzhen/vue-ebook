@@ -10,6 +10,9 @@
                ref="right"></div>
         </div>
       </div>
+      <div class="point-wrapper">
+        <div class="point" :class="{'animation':runPointAnimation}" v-for="item in pointList" :key="item"></div>
+      </div>
     </div>
     <div class="close-btn-wrapper" @click="close">
       <div class="icon-close"></div>
@@ -31,7 +34,9 @@
         front: 0,
         back: 1,
         intervalTime: 25,
-        runFlapCardAnimation: false
+        runFlapCardAnimation: false,
+        pointList: null,
+        runPointAnimation: false
       };
     },
     methods: {
@@ -151,7 +156,15 @@
         // 弹出动画300ms  完了之后执行翻页动画
         this.bounceTask = setTimeout(() => {
           this.startFlapCardAnimation();
+          this.startPointAnimation();
         }, 300);
+      },
+      startPointAnimation() {
+        this.runPointAnimation = true;
+        // 1s后烟火动画停止
+        setTimeout(() => {
+          this.runPointAnimation = false;
+        }, 1000);
       }
     },
     watch: {
@@ -160,12 +173,19 @@
           this.runAnimation();
         }
       }
+    },
+    created() {
+      this.pointList = [];
+      for (let i = 0; i < 18; i++) {
+        this.pointList.push(`point${i}`);
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
+  @import "../../assets/styles/flapCard";
 
   .flap-card-wrapper {
     z-index: 1000;
@@ -251,6 +271,22 @@
             background-position: center left;
             //修改旋转轴
             transform-origin: left;
+          }
+        }
+      }
+      .point-wrapper{
+        z-index: 1500;
+        @include absCenter;
+
+        .point{
+          border-radius: 50%;
+          @include absCenter;
+          &.animation {
+            @for $i from 1 to length($moves) {
+              &:nth-child(#{$i}) {
+                @include move($i);
+              }
+            }
           }
         }
       }
