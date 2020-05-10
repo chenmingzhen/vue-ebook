@@ -35,6 +35,7 @@
     },
     methods: {
       close() {
+        this.stopAnimation();
         this.setFlapCardVisible(false);
       },
       semiCircleStyle(item, dir) {
@@ -118,13 +119,37 @@
       },
       startFlapCardAnimation() {
         this.prepare();
-        setInterval(() => {
+        this.cardTask = setInterval(() => {
           this.flapCardRotate();
         }, this.intervalTime);
+      },
+      stopAnimation() {
+        // 清除动画的计时器
+        if (this.cardTask) {
+          clearInterval(this.cardTask);
+        }
+
+        this.reset();
+      },
+      // 关闭时 重置样式
+      reset() {
+        this.front = 0;
+        this.back = 1;
+        this.flapCardList.forEach((item, index) => {
+          item.zIndex = 100 - index;
+          item._g = item.g;
+          item.rotateDegree = 0;
+          this.rotate(index, 'front');
+          this.rotate(index, 'back');
+        });
       }
     },
-    mounted() {
-      this.startFlapCardAnimation();
+    watch: {
+      flapCardVisible(v) {
+        if (v) {
+          this.startFlapCardAnimation();
+        }
+      }
     }
   };
 </script>
