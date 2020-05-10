@@ -29,7 +29,8 @@
         // 引入数据
         flapCardList,
         front: 0,
-        back: 1
+        back: 1,
+        intervalTime: 25
       };
     },
     methods: {
@@ -66,8 +67,46 @@
         if (frontFlapCard.rotateDegree === 90 && backFlapCard.rotateDegree === 90) {
           backFlapCard.zIndex += 2;
         }
-        this.rotate(0, 'front');
-        this.rotate(1, 'back');
+        this.rotate(this.front, 'front');
+        this.rotate(this.back, 'back');
+        // 当前一张正面和后一张背面跑完一圈后 到下一组进行
+        if (frontFlapCard.rotateDegree === 180 && backFlapCard.rotateDegree === 0) {
+          this.next();
+        }
+      },
+      next() {
+        // 复原属性
+        const frontFlapCard = this.flapCardList[this.front];
+        const backFlapCard = this.flapCardList[this.back];
+        frontFlapCard.rotateDegree = 0;
+        backFlapCard.rotateDegree = 0;
+        frontFlapCard._g = frontFlapCard.g;
+        backFlapCard._g = backFlapCard.g;
+        this.rotate(this.front, 'front');
+        this.rotate(this.back, 'back');
+
+        this.front++;
+        this.back++;
+        // 超出范围置零
+        const len = this.flapCardList.length;
+        if (this.front >= len) {
+          this.front = 0;
+        }
+        if (this.back >= len) {
+          this.back = 0;
+        }
+        // 动态设置zIndex
+        // 100 -> 96
+        // 99 -> 100
+        // 98 -> 99
+        // 97 -> 98
+        // 96 -> 97
+        // (0 - 1 + 5) % 5 = 4
+        // (1 - 1 + 5) % 5 = 0
+        this.flapCardList.forEach((item, index) => {
+          item.zIndex = 100 - ((index - this.front + len) % len);
+        });
+        this.prepare();
       },
       prepare() {
         const backFlapCard = this.flapCardList[this.back];
@@ -81,7 +120,7 @@
         this.prepare();
         setInterval(() => {
           this.flapCardRotate();
-        }, 200);
+        }, this.intervalTime);
       }
     },
     mounted() {
