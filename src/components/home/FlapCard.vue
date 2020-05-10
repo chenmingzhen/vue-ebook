@@ -1,6 +1,6 @@
 <template>
   <div class="flap-card-wrapper" v-show="flapCardVisible">
-    <div class="flap-card-bg">
+    <div class="flap-card-bg" :class="{'animation':runFlapCardAnimation}">
       <div class="flap-card" v-for="(item,index) in flapCardList" :key="index" :style="{zIndex:item.zIndex}">
         <!--这里设置z-index-->
         <div class="flap-card-circle">
@@ -30,7 +30,8 @@
         flapCardList,
         front: 0,
         back: 1,
-        intervalTime: 25
+        intervalTime: 25,
+        runFlapCardAnimation: false
       };
     },
     methods: {
@@ -142,12 +143,21 @@
           this.rotate(index, 'front');
           this.rotate(index, 'back');
         });
+      },
+      runAnimation() {
+        // 显示弹出动画
+        this.runFlapCardAnimation = true;
+
+        // 弹出动画300ms  完了之后执行翻页动画
+        this.bounceTask = setTimeout(() => {
+          this.startFlapCardAnimation();
+        }, 300);
       }
     },
     watch: {
       flapCardVisible(v) {
         if (v) {
-          this.startFlapCardAnimation();
+          this.runAnimation();
         }
       }
     }
@@ -189,7 +199,27 @@
       height: 1.707rem;
       border-radius: 0.133rem;
       background: white;
-
+      &.animation{
+        animation: flap-card-move .3s ease-in both;
+      }
+      @keyframes flap-card-move {
+        0%{
+          transform: scale(0);
+          opacity: 0;
+        }
+        50%{
+          transform: scale(1.2);
+          opacity: 1;
+        }
+        75%{
+          transform: scale(.9);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
       .flap-card {
         width: 1.28rem;
         height: 1.28rem;
