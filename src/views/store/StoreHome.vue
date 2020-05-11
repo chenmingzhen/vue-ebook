@@ -7,7 +7,8 @@
         <div class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
       </div>
       <guess-you-like :data="guessYouLike"></guess-you-like>
-      <recommend :data="recommend"></recommend>
+      <recommend :data="recommend" class="recommend"></recommend>
+      <featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')" class="featured"></featured>
     </scroll>
     <flap-card :data="random"></flap-card>
   </div>
@@ -21,7 +22,7 @@
   import { home } from '../../api/store';
   import GuessYouLike from '../../components/home/GuessYouLike';
   import Recommend from '../../components/home/Recommend';
-
+  import Featured from '../../components/home/Featured';
   export default {
     name: 'StoreHome',
     mixins: [storeHomeMixin],
@@ -30,7 +31,8 @@
       scroll,
       FlapCard,
       GuessYouLike,
-      Recommend
+      Recommend,
+      Featured
     },
     data() {
       return {
@@ -96,6 +98,12 @@
         background-repeat: no-repeat;
         background-size: 100% 100%;
       }
+    }
+    .recommend{
+      margin-top: 0.533rem;
+    }
+    .featured{
+      margin-top: 0.533rem;
     }
   }
 </style>
