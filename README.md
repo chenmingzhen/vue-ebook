@@ -29,6 +29,7 @@
 13. @mousedown.left等鼠标事件
 14. 利用占位div 利用flex实现搜索框变窄动画
 15. this.$nextTick 将回调函数延迟在下一次dom更新数据后调用
+16. mock数据模拟
 ```
 
 ## 环境配置
@@ -45,6 +46,10 @@
     cnpm i --save web-storage-cache
 5.语言切换
     cnpm i --save vue-i18n
+6.模拟数据
+    cnpm i mockjs --D
+7. 请求
+    cnpm install --save axios
 ```
 
 ## 填坑
@@ -56,6 +61,7 @@
     换成Object.prototype.hasOwnProperty.call(getters, key)
 3.epubjs版本过高 无法执行on方法 卸载 重装
     cnpm install epubjs@0.3.71
+4. 没在main.js中引入mock/index.vue 无法取到数据
 ```
 
 TODO

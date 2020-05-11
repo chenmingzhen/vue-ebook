@@ -27,6 +27,9 @@
   export default {
     name: 'FlapCard',
     mixins: [storeHomeMixin],
+    props: {
+      data: Object
+    },
     data() {
       return {
         // 引入数据
@@ -228,21 +231,23 @@
       // 作为默认值 初始状态
       transform: scale(0);
       opacity: 0;
-      &.animation{
+
+      &.animation {
         // both的作用是 动画结束后 保持在动画结束的最后的一个状态
         // 这样就不会回到初始状态 transform scale 0 opacity 0 停在100%的状态了
         animation: flap-card-move .3s ease-in both;
       }
+
       @keyframes flap-card-move {
-        0%{
+        0% {
           transform: scale(0);
           opacity: 0;
         }
-        50%{
+        50% {
           transform: scale(1.2);
           opacity: 1;
         }
-        75%{
+        75% {
           transform: scale(.9);
           opacity: 1;
         }
@@ -251,6 +256,7 @@
           opacity: 1;
         }
       }
+
       .flap-card {
         width: 1.28rem;
         height: 1.28rem;
@@ -285,13 +291,15 @@
           }
         }
       }
-      .point-wrapper{
+
+      .point-wrapper {
         z-index: 1500;
         @include absCenter;
 
-        .point{
+        .point {
           border-radius: 50%;
           @include absCenter;
+
           &.animation {
             @for $i from 1 to length($moves) {
               &:nth-child(#{$i}) {

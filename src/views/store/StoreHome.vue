@@ -34,7 +34,7 @@
       <div>111111</div>
       <div>111111</div>
     </scroll>
-    <flap-card></flap-card>
+    <flap-card :data="random"></flap-card>
   </div>
 </template>
 
@@ -43,6 +43,7 @@
   import scroll from '../../components/common/scroll';
   import { storeHomeMixin } from '../../utils/mixin';
   import FlapCard from '../../components/home/FlapCard';
+  import { home } from '../../api/store';
   export default {
     name: 'StoreHome',
     mixins: [storeHomeMixin],
@@ -53,7 +54,8 @@
     },
     data() {
       return {
-        scrollTop: 94
+        scrollTop: 94,
+        random: null
       };
     },
     methods: {
@@ -72,6 +74,17 @@
         // 更新滚动条 重新计算top
         this.$refs.scroll.refresh();
       }
+    },
+    mounted() {
+      // 通过API获取首页数据
+      home().then(response => {
+        if (response && response.status === 200) {
+          const data = response.data;
+          const randomIndex = Math.floor(Math.random() * data.random.length);
+          this.random = data.random[randomIndex];
+          console.log(this.random);
+        }
+      });
     }
   };
 </script>
