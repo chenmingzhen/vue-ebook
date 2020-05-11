@@ -7,6 +7,7 @@
         <div class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
       </div>
       <guess-you-like :data="guessYouLike"></guess-you-like>
+      <recommend :data="recommend"></recommend>
     </scroll>
     <flap-card :data="random"></flap-card>
   </div>
@@ -19,6 +20,7 @@
   import FlapCard from '../../components/home/FlapCard';
   import { home } from '../../api/store';
   import GuessYouLike from '../../components/home/GuessYouLike';
+  import Recommend from '../../components/home/Recommend';
 
   export default {
     name: 'StoreHome',
@@ -27,7 +29,8 @@
       SearchBar,
       scroll,
       FlapCard,
-      GuessYouLike
+      GuessYouLike,
+      Recommend
     },
     data() {
       return {
@@ -78,14 +81,16 @@
 </script>
 
 <style lang="scss" scoped>
-  .store-home{
+  .store-home {
     width: 100%;
     height: 100%;
-    .banner-wrapper{
+
+    .banner-wrapper {
       width: 100%;
       padding: 0.267rem;
       box-sizing: border-box;
-      .banner-img{
+
+      .banner-img {
         width: 100%;
         height: 4rem;
         background-repeat: no-repeat;
