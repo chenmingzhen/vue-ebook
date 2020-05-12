@@ -12,6 +12,7 @@
       <div class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index">
         <category-book :data="item"></category-book>
       </div>
+      <category class="categories" :data="categories"></category>
     </scroll>
     <flap-card :data="random"></flap-card>
   </div>
@@ -27,6 +28,7 @@
   import Recommend from '../../components/home/Recommend';
   import Featured from '../../components/home/Featured';
   import CategoryBook from '../../components/home/CategoryBook';
+  import Category from '../../components/home/Category';
   export default {
     name: 'StoreHome',
     mixins: [storeHomeMixin],
@@ -37,7 +39,8 @@
       GuessYouLike,
       Recommend,
       Featured,
-      CategoryBook
+      CategoryBook,
+      Category
     },
     data() {
       return {
@@ -108,6 +111,12 @@
       margin-top: 0.533rem;
     }
     .featured{
+      margin-top: 0.533rem;
+    }
+    .category-list-wrapper {
+      margin-top: 0.533rem;
+    }
+    .categories {
       margin-top: 0.533rem;
     }
   }
