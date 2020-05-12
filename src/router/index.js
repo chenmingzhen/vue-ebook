@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
 Vue.use(VueRouter);
 
 const routes = [];
@@ -27,7 +28,15 @@ const router = new VueRouter({
       children: [{
         path: 'home',
         component: () => import('../views/store/StoreHome.vue')
-      }]
+      },
+        {
+          path: 'list',
+          component: () => import('../views/store/StoreList.vue')
+        },
+        {
+          path: 'detail',
+          component: () => import('../views/store/StoreDetail.vue')
+        }]
     }
   ]
 });

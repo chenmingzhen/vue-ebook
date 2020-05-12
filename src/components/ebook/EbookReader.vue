@@ -53,6 +53,7 @@
       },
       nextPage() {
         if (this.rendition) {
+          console.log(this.book);
           this.rendition.next();
           this.hideTitleAndMenu();
         }

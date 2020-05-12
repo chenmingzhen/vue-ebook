@@ -1,6 +1,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { themeList, addCss, removeAllCss, getReadTimeByMinute } from './book';
 import { saveLocation, getBookmark } from './localStorage';
+import { gotoBookDetail } from './store';
 
 export const ebookMixin = {
   computed: {
@@ -76,6 +77,7 @@ export const ebookMixin = {
       }
     },
     display(target, cb) {
+      console.log(this.currentBook);
       if (target) {
         this.currentBook.rendition.display(target).then(() => {
           this.refreshLocation();
@@ -87,6 +89,8 @@ export const ebookMixin = {
           if (cb) cb();
         });
       }
+      // 等电子书可以解析出来就去掉
+      if (cb) cb();
     },
     refreshLocation() {
       const currentLocation = this.currentBook.rendition.currentLocation();
@@ -136,7 +140,7 @@ export const storeHomeMixin = {
       'setFlapCardVisible'
     ]),
     showBookDetail(book) {
-
+      gotoBookDetail(this, book);
     }
   }
 };
