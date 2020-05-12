@@ -79,16 +79,34 @@
           display: flex;
           width: 100%;
           background: #eee;
+
+          .content-wrapper {
+            flex: 0 0 50%;
+            width: 50%;
+            @include columnCenter;
+
+            .title {
+              text-align: center;
+            }
+
+            .num {
+              text-align: center;
+              margin-top: 0.133rem;
+            }
+          }
+
           .img-wrapper {
             flex: 0 0 50%;
             width: 50%;
             padding: 0.533rem 0.267rem;
             box-sizing: border-box;
+
             .img-group {
               position: relative;
               width: 100%;
               height: 1.6rem;
               @include left;
+
               .img {
                 position: absolute;
                 left: 0;
