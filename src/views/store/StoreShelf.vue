@@ -20,6 +20,10 @@
       ShelfTitle,
       Scroll,
       ShelfSearch
+    },
+    mounted() {
+      // 获取书架列表数据
+      this.getShelfList();
     }
   };
 </script>
