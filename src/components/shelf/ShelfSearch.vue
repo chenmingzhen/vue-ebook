@@ -6,17 +6,17 @@
             <span class="icon-search icon"></span>
           </div>
           <div class="search-input-wrapper">
-            <input type="text" class="search-input">
+            <input type="text" class="search-input" @click="onSearchClick" v-model="searchText">
           </div>
           <div class="icon-clear-wrapper">
-            <span class="icon-close-circle-fill"></span>
+            <span class="icon-close-circle-fill" v-show="searchText.length>0" @click="clearSearchText"></span>
           </div>
         </div>
-        <div class="icon-locale-wrapper">
-          <span class="icon-cn icon"></span>
-          <span class="icon-en icon"></span>
+        <div class="icon-locale-wrapper" v-if="!ifInputClicked" @click="switchLocale">
+          <span class="icon-cn icon" v-if="lang==='cn'"></span>
+          <span class="icon-en icon" v-else></span>
         </div>
-        <div class="cancel-btn-wrapper">
+        <div class="cancel-btn-wrapper" @click="onCancelClick" v-else>
           <span class="cancel-text">{{$t('shelf.cancel')}}</span>
         </div>
       </div>
@@ -24,8 +24,41 @@
 </template>
 
 <script>
+  import { setLocalStorage } from '../../utils/localStorage';
+  import { storeShelfMixin } from '../../utils/mixin';
   export default {
-    name: 'ShelfSearch'
+    name: 'ShelfSearch',
+    mixins: [storeShelfMixin],
+    data() {
+      return {
+        ifInputClicked: false,
+        searchText: ''
+      };
+    },
+    computed: {
+      lang() {
+        return this.$i18n.locale;
+      }
+    },
+    methods: {
+      onSearchClick() {
+        this.ifInputClicked = true;
+      },
+      onCancelClick() {
+        this.ifInputClicked = false;
+      },
+      clearSearchText() {
+        this.searchText = '';
+      },
+      switchLocale() {
+        if (this.lang === 'en') {
+          this.$i18n.locale = 'cn';
+        } else {
+          this.$i18n.locale = 'en';
+        }
+        setLocalStorage('locale', this.$i18n.locale);
+      }
+    }
   };
 </script>
 
