@@ -24,7 +24,7 @@ const router = new VueRouter({
     {
       path: '/store',
       component: () => import('../views/store/index.vue'),
-      redirect: '/store/home',
+      redirect: '/store/shelf',
       children: [{
         path: 'home',
         component: () => import('../views/store/StoreHome.vue')
@@ -36,7 +36,12 @@ const router = new VueRouter({
         {
           path: 'detail',
           component: () => import('../views/store/StoreDetail.vue')
+        },
+        {
+          path: 'shelf',
+          component: () => import('../views/store/StoreShelf')
         }]
+
     }
   ]
 });
