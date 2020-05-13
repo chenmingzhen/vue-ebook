@@ -1,5 +1,5 @@
 <template>
-    <div class="shelf-search-wrapper">
+    <div class="shelf-search-wrapper" :class="{'search-top': ifInputClicked, 'hide-shadow': ifHideShadow}">
       <div class="shelf-search" :class="{'search-top' : ifInputClicked}">
         <div class="search-wrapper">
           <div class="icon-search-wrapper">
@@ -40,7 +40,8 @@
       return {
         ifInputClicked: false,
         searchText: '',
-        selectedTab: 1
+        selectedTab: 1,
+        ifHideShadow: true
       };
     },
     computed: {
@@ -86,6 +87,15 @@
       },
       onTabClick(id) {
         this.selectedTab = id;
+      }
+    },
+    watch: {
+      offsetY(offsetY) {
+        if (offsetY > 0 && this.ifInputClicked) {
+          this.ifHideShadow = false; // 显示阴影
+        } else {
+          this.ifHideShadow = true; // 隐藏阴影
+        }
       }
     }
   };

@@ -2,8 +2,9 @@
 <template>
   <div class="store-shelf">
     <shelf-title :title="$t('shelf.title')"></shelf-title>
-    <scroll class="store-shelf-scroll-wrapper">
+    <scroll class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" :top="0">
       <shelf-search></shelf-search>
+      <shelf-list></shelf-list>
     </scroll>
   </div>
 </template>
@@ -13,17 +14,24 @@
   import { storeShelfMixin } from '../../utils/mixin';
   import Scroll from '../../components/common/scroll';
   import ShelfSearch from '../../components/shelf/ShelfSearch';
+  import ShelfList from '../../components/shelf/ShelfList';
   export default {
     name: 'StoreShelf',
     mixins: [storeShelfMixin],
     components: {
       ShelfTitle,
       Scroll,
-      ShelfSearch
+      ShelfSearch,
+      ShelfList
     },
     mounted() {
       // 获取书架列表数据
       this.getShelfList();
+    },
+    methods: {
+      onScroll(offsetY) {
+        this.setOffsetY(offsetY);
+      }
     }
   };
 </script>

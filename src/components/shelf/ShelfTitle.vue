@@ -5,10 +5,10 @@
         <span class="shelf-title-text">{{title}}</span>
         <span class="shelf-title-sub-text" v-show="isEditMode">{{selectedText}}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-left" ><!--v-if="showClear"-->
+      <div class="shelf-title-btn-wrapper shelf-title-left"><!--v-if="showClear"-->
         <span class="shelf-title-btn-text" @click="clearCache">{{$t('shelf.clearCache')}}</span>
       </div>
-      <div class="shelf-title-btn-wrapper shelf-title-right" ><!--v-if="showEdit"-->
+      <div class="shelf-title-btn-wrapper shelf-title-right"><!--v-if="showEdit"-->
         <span class="shelf-title-btn-text"
               @click="onEditClick">{{isEditMode ? $t('shelf.cancel') : $t('shelf.edit')}}</span>
       </div>
@@ -49,58 +49,76 @@
       onEditClick() {
         this.setIsEditMode(!this.isEditMode);
       }
+    },
+    watch: {
+      offsetY(offsetY) {
+        if (offsetY > 0) {
+          this.ifHideShadow = false;
+        } else {
+          this.ifHideShadow = true;
+        }
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
-  .shelf-title{
+
+  .shelf-title {
     position: relative;
     z-index: 130;
     width: 100%;
     height: 1.12rem;
     background: white;
     box-shadow: 0 px2rem(2) px2rem(2) 0 rgba(0, 0, 0, .1);
-    &.hide-shadow{
+
+    &.hide-shadow {
       box-shadow: none;
     }
-    .shelf-title-text-wrapper{
+    .shelf-title-text-wrapper {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 1.12rem;
       @include columnCenter;
+
       .shelf-title-text {
         font-size: 0.4rem;
         line-height: 0.533rem;
         font-weight: bold;
         color: #333;
       }
+
       .shelf-title-sub-text {
         font-size: 0.267rem;
         color: #333;
       }
     }
-    .shelf-title-btn-wrapper{
+
+    .shelf-title-btn-wrapper {
       position: absolute;
       top: 0;
       box-sizing: border-box;
       height: 100%;
       @include center;
-      .shelf-title-btn-text{
+
+      .shelf-title-btn-text {
         font-size: 0.373rem;
         color: #666;
       }
+
       .icon-back {
         font-size: px2rem(20);
         color: #666;
       }
+
       &.shelf-title-left {
         left: 0;
         padding-left: px2rem(15);
       }
+
       &.shelf-title-right {
         right: 0;
         padding-right: px2rem(15);
