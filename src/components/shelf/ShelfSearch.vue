@@ -20,6 +20,13 @@
           <span class="cancel-text">{{$t('shelf.cancel')}}</span>
         </div>
       </div>
+      <transition name="hot-search-move">
+        <div class="shelf-search-tab-wrapper" v-if="ifInputClicked">
+          <div class="shelf-search-tab-item" v-for="item in tabs" :key="item.id" @click="onTabClick(item.id)">
+            <span class="shelf-search-tab-text" :class="{'is-selected': item.id === selectedTab}">{{item.text}}</span>
+          </div>
+        </div>
+      </transition>
     </div>
 </template>
 
@@ -32,12 +39,29 @@
     data() {
       return {
         ifInputClicked: false,
-        searchText: ''
+        searchText: '',
+        selectedTab: 1
       };
     },
     computed: {
       lang() {
         return this.$i18n.locale;
+      },
+      tabs() {
+        return [
+          {
+            id: 1,
+            text: this.$t('shelf.default')
+          },
+          {
+            id: 2,
+            text: this.$t('shelf.progress')
+          },
+          {
+            id: 3,
+            text: this.$t('shelf.purchase')
+          }
+        ];
       }
     },
     methods: {
@@ -59,6 +83,9 @@
           this.$i18n.locale = 'en';
         }
         setLocalStorage('locale', this.$i18n.locale);
+      },
+      onTabClick(id) {
+        this.selectedTab = id;
       }
     }
   };
@@ -153,6 +180,26 @@
         .cancel-text {
           font-size: px2rem(14);
           color: $color-blue;
+        }
+      }
+    }
+    .shelf-search-tab-wrapper {
+      position: absolute;
+      top: px2rem(52);
+      left: 0;
+      z-index: 105;
+      display: flex;
+      width: 100%;
+      height: px2rem(42);
+      .shelf-search-tab-item {
+        flex: 1;
+        @include center;
+        .shelf-search-tab-text {
+          font-size: px2rem(12);
+          color: #999;
+          &.is-selected {
+            color: $color-blue;
+          }
         }
       }
     }

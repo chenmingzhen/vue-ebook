@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="slide-down">
     <div class="shelf-title" :class="{'hide-shadow':ifHideShadow}" v-show="shelfTitleVisible">
       <div class="shelf-title-text-wrapper">
         <span class="shelf-title-text">{{title}}</span>
