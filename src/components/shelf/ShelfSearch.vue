@@ -1,6 +1,6 @@
 <template>
     <div class="shelf-search-wrapper">
-      <div class="shelf-search">
+      <div class="shelf-search" :class="{'search-top' : ifInputClicked}">
         <div class="search-wrapper">
           <div class="icon-search-wrapper">
             <span class="icon-search icon"></span>
@@ -43,9 +43,11 @@
     methods: {
       onSearchClick() {
         this.ifInputClicked = true;
+        this.setShelfTitleVisible(false);
       },
       onCancelClick() {
         this.ifInputClicked = false;
+        this.setShelfTitleVisible(true);
       },
       clearSearchText() {
         this.searchText = '';
@@ -88,6 +90,7 @@
       display: flex;
       width: 100%;
       height: 1.387rem;
+      transition: top $animationTime $animationType;
       &.search-top {
         top: 0;
       }
