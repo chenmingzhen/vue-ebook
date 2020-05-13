@@ -2,6 +2,9 @@
 <template>
   <div class="store-shelf">
     <shelf-title :title="$t('shelf.title')"></shelf-title>
+    <scroll class="store-shelf-scroll-wrapper">
+      <shelf-search></shelf-search>
+    </scroll>
   </div>
 </template>
 
@@ -9,11 +12,14 @@
   import ShelfTitle from '../../components/shelf/ShelfTitle';
   import { storeShelfMixin } from '../../utils/mixin';
   import Scroll from '../../components/common/scroll';
+  import ShelfSearch from '../../components/shelf/ShelfSearch';
   export default {
     name: 'StoreShelf',
     mixins: [storeShelfMixin],
     components: {
-      ShelfTitle
+      ShelfTitle,
+      Scroll,
+      ShelfSearch
     }
   };
 </script>
