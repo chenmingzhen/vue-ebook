@@ -1,31 +1,8 @@
 <template>
     <div class="shelf-list">
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <div>aaaaaaaaaaaaaa</div>
-      <shelf-item></shelf-item>
+      <div class="shelf-list-item-wrapper" v-for="item in data" :key="item.id">
+        <shelf-item :data="item"></shelf-item>
+      </div>
     </div>
 </template>
 
@@ -38,6 +15,9 @@
     mixins: [storeShelfMixin],
     components: {
       ShelfItem
+    },
+    props: {
+      data: Array
     }
   };
 </script>

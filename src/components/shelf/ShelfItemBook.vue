@@ -1,10 +1,10 @@
 <template>
-<div>ItemCategory</div>
+<div>ItemBook</div>
 </template>
 
 <script>
   export default {
-    name: 'ShelfCategory'
+    name: 'ShelfItemBook'
   };
 </script>
 

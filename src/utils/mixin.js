@@ -170,13 +170,17 @@ export const storeShelfMixin = {
     ]),
     getShelfList() {
       const shelfList = getBookShelf();
+      console.log(shelfList);
       if (!shelfList) {
         shelf().then(response => {
           if (response.status === 200 && response.data && response.data.bookList) {
-            saveBookShelf(shelfList);
-            return this.setShelfList(shelfList);
+            console.log(response);
+            saveBookShelf(response.data.bookList);
+            return this.setShelfList(response.data.bookList);
           }
         });
+      } else {
+        return this.setShelfList(shelfList);
       }
     }
   }

@@ -30,6 +30,7 @@
 14. 利用占位div 利用flex实现搜索框变窄动画
 15. this.$nextTick 将回调函数延迟在下一次dom更新数据后调用
 16. mock数据模拟
+17. vue标签中 直接使用vuex属性 不加this <shelf-list :data="shelfList"></shelf-list>
 ```
 
 ## 环境配置

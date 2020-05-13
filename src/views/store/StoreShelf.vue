@@ -4,7 +4,7 @@
     <shelf-title :title="$t('shelf.title')"></shelf-title>
     <scroll class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" :top="0">
       <shelf-search></shelf-search>
-      <shelf-list></shelf-list>
+      <shelf-list :data="shelfList"></shelf-list>
     </scroll>
   </div>
 </template>
@@ -15,6 +15,7 @@
   import Scroll from '../../components/common/scroll';
   import ShelfSearch from '../../components/shelf/ShelfSearch';
   import ShelfList from '../../components/shelf/ShelfList';
+
   export default {
     name: 'StoreShelf',
     mixins: [storeShelfMixin],
@@ -45,6 +46,7 @@
     width: 100%;
     height: 100%;
     background: white;
+
     .store-shelf-scroll-wrapper {
       position: absolute;
       top: 0;
