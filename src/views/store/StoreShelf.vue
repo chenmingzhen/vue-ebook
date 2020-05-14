@@ -2,10 +2,11 @@
 <template>
   <div class="store-shelf">
     <shelf-title :title="$t('shelf.title')"></shelf-title>
-    <scroll class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" :top="0">
+    <scroll class="store-shelf-scroll-wrapper" @onScroll="onScroll" ref="scroll" :top="0" :bottom="scrollBottom">
       <shelf-search></shelf-search>
       <shelf-list :data="shelfList"></shelf-list>
     </scroll>
+    <shelf-footer></shelf-footer>
   </div>
 </template>
 
@@ -15,7 +16,7 @@
   import Scroll from '../../components/common/scroll';
   import ShelfSearch from '../../components/shelf/ShelfSearch';
   import ShelfList from '../../components/shelf/ShelfList';
-
+  import ShelfFooter from '../../components/shelf/ShelfFooter';
   export default {
     name: 'StoreShelf',
     mixins: [storeShelfMixin],
@@ -23,7 +24,8 @@
       ShelfTitle,
       Scroll,
       ShelfSearch,
-      ShelfList
+      ShelfList,
+      ShelfFooter
     },
     mounted() {
       // 获取书架列表数据
@@ -32,6 +34,20 @@
     methods: {
       onScroll(offsetY) {
         this.setOffsetY(offsetY);
+      }
+    },
+    data() {
+      return {
+        scrollBottom: 0
+      };
+    },
+    watch: {
+      // 监听编辑模式，编辑模式下滚动条距底部需要产生48像素的距离
+      isEditMode(isEditMode) {
+        this.scrollBottom = isEditMode ? 48 : 0;
+        this.$nextTick(() => {
+          this.$refs.scroll.refresh();
+        });
       }
     }
   };

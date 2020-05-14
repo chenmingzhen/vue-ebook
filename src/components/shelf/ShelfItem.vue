@@ -2,7 +2,7 @@
   <div class="shelf-item" :class="{'shelf-item-shadow':data.type===1||data.type===2}" @click="onItemClick">
     <!--动态组件-->
     <component class="shelf-item-comp" :is="item" :data="data" :class="{'is-edit': isEditMode && data.type === 2}"/>
-    <div class="icon-selected" v-show="isEditMode&&data.type===1"></div>
+    <div class="icon-selected" v-show="isEditMode&&data.type===1" :class="{'is-selected':data.selected}"></div>
   </div>
 </template>
 
@@ -33,7 +33,14 @@
     methods: {
       onItemClick() {
         if (this.isEditMode) {
-
+          this.data.selected = !this.data.selected;
+          if (this.data.selected && this.data.type === 1) {
+            // 这里数组不使用setter也可以设置值
+            this.shelfSelected.pushWithoutDuplicate(this.data);
+          } else {
+            this.setShelfSelected(this.shelfSelected.filter(item => item.id !== this.data.id));
+          }
+          console.log(this.shelfSelected);
         } else {
           if (this.data.type === 1) {
             this.showBookDetail(this.data);

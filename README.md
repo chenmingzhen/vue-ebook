@@ -31,6 +31,8 @@
 15. this.$nextTick 将回调函数延迟在下一次dom更新数据后调用
 16. mock数据模拟
 17. vue标签中 直接使用vuex属性 不加this <shelf-list :data="shelfList"></shelf-list>
+18. 增强数组方法
+19. vuex中数组不使用setter也可以设置值 但是其他类型就不可以
 ```
 
 ## 环境配置
