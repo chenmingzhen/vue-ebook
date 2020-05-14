@@ -1,7 +1,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { themeList, addCss, removeAllCss, getReadTimeByMinute } from './book';
 import { saveLocation, getBookmark, getBookShelf, saveBookShelf } from './localStorage';
-import { gotoBookDetail } from './store';
+import { appendAddToShelf, gotoBookDetail } from './store';
 import { shelf } from '../api/store';
 
 export const ebookMixin = {
@@ -169,19 +169,21 @@ export const storeShelfMixin = {
       'setCurrentType'
     ]),
     getShelfList() {
-      const shelfList = getBookShelf();
-      console.log(shelfList);
+      let shelfList = getBookShelf();
       if (!shelfList) {
         shelf().then(response => {
           if (response.status === 200 && response.data && response.data.bookList) {
-            console.log(response);
-            saveBookShelf(response.data.bookList);
-            return this.setShelfList(response.data.bookList);
+            shelfList = appendAddToShelf(response.data.bookList);
+            saveBookShelf(shelfList);
+            return this.setShelfList(shelfList);
           }
         });
       } else {
         return this.setShelfList(shelfList);
       }
+    },
+    showBookDetail(book) {
+      gotoBookDetail(this, book);
     }
   }
 };
