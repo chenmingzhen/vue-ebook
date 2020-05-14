@@ -1,5 +1,5 @@
 <template>
-  <div class="shelf-item">
+  <div class="shelf-item" :class="{'shelf-item-shadow':data.type===1||data.type===2}">
     <!--动态组件-->
     <component class="shelf-item-comp" :is="item" :data="data">
 
@@ -39,6 +39,8 @@
   .shelf-item{
     width: 100%;
     height: 100%;
-    background: #42b983;
+    &.shelf-item-shadow {
+      box-shadow: px2rem(2) px2rem(2) px2rem(6) px2rem(2) rgba(200, 200, 200, 1);
+    }
   }
 </style>
