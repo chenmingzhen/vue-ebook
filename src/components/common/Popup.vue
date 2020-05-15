@@ -10,8 +10,8 @@
              :class="{'danger':item.type==='danger'}"
              v-for="(item, index) in btn"
              :key="index"
-             >{{item.text}}<!--@click="item.click"-->
-        </div>
+             @click="item.click">{{item.text}}
+        </div> <!--使用传过来的click事件-->
       </div>
     </transition>
   </div>

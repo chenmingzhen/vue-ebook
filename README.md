@@ -33,6 +33,25 @@
 17. vue标签中 直接使用vuex属性 不加this <shelf-list :data="shelfList"></shelf-list>
 18. 增强数组方法
 19. vuex中数组不使用setter也可以设置值 但是其他类型就不可以
+20. 将事件传给子组件 让子组件点击后执行事件
+```
+
+## 代码块
+```javascript
+//20
+// 不解 为什么可以直接在后面跟show  show方法不是没有返回值嘛？
+this.popupMenu = this.popup({
+  title: this.isPrivate ? this.$t('shelf.closePrivateTitle') : this.$t('shelf.setPrivateTitle'),
+  btn: [{
+    text: this.isPrivate ? this.$t('shelf.close') : this.$t('shelf.open'),
+    // 将事件传给组件 组件执行
+    click: () => {
+      this.setPrivate();
+    }
+  }]
+}).show(); 
+
+ @click="item.click"
 ```
 
 ## 环境配置

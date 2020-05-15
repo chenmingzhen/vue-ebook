@@ -48,6 +48,12 @@
       },
       onEditClick() {
         this.setIsEditMode(!this.isEditMode);
+        // 自己添加 退出编辑模式后 将已选去掉 将书架的单项selected置为false
+        this.shelfList.forEach(item => {
+          item.selected = false;
+        });
+        this.setShelfList(this.shelfList);
+        this.setShelfSelected([]);
       }
     },
     watch: {

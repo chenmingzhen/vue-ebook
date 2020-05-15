@@ -8,15 +8,20 @@ Vue.createAPI(Toast, true);
 Vue.createAPI(Popup, true);
  Vue.mixin({
   methods: {
-    toast(settings, time = 10000) {
+    toast(settings) {
       return this.$createToast({
-        $props: { text: settings, timeout: time }
+        $props: { text: settings }
       });
     },
     popup(settings) {
       return this.$createPopup({
         $props: settings
       });
+    },
+    simpleToast(text) {
+      const toast = this.toast(text);
+      toast.show();
+      toast.updateText(text);
     }
   }
 });
