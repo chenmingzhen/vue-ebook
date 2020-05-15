@@ -56,6 +56,13 @@
         } else {
           return this.shelfSelected.every(item => item.private);
         }
+      },
+      isDownload() {
+        if (!this.isSelected) {
+          return false;
+        } else {
+          return this.shelfSelected.every(item => item.cache);
+        }
       }
     },
     methods: {
@@ -68,10 +75,12 @@
           this.showPrivate();
           break;
         case 2:
+          this.showDownload();
           break;
         case 3:
           break;
         case 4:
+          this.showRemove();
           break;
         default:
           break;
@@ -124,6 +133,58 @@
       },
       hidePopup() {
         this.popupMenu.hide();
+      },
+      showDownload() {
+        this.popupMenu = this.popup({
+          title: this.isDownload ? this.$t('shelf.removeDownloadTitle') : this.$t('shelf.setDownloadTitle'),
+          btn: [
+            {
+              text: this.isDownload ? this.$t('shelf.delete') : this.$t('shelf.open'),
+              click: () => {
+                // this.setDownload();
+              }
+            },
+            {
+              text: this.$t('shelf.cancel'),
+              click: () => {
+                this.hidePopup();
+              }
+            }
+          ]
+        }).show();
+      },
+      showRemove() {
+        let title;
+        if (this.shelfSelected.length === 1) {
+          title = this.$t('shelf.removeBookTitle').replace('$1', `《${this.shelfSelected[0].title}》`);
+        } else {
+          title = this.$t('shelf.removeBookTitle').replace('$1', this.$t('shelf.selectedBooks'));
+        }
+        this.popupMenu = this.popup({
+          title: title,
+          btn: [
+            {
+              text: this.$t('shelf.removeBook'),
+              type: 'danger',
+              click: () => {
+                this.removeSelected();
+              }
+            },
+            {
+              text: this.$t('shelf.cancel'),
+              click: () => {
+                this.hidePopup();
+              }
+            }
+          ]
+        }).show();
+      },
+      removeSelected() {
+        this.shelfSelected.forEach(selected => {
+          this.setShelfList(this.shelfList.filter(book => book !== selected));
+        });
+        this.setShelfSelected([]);
+        this.onComplete();
       }
     }
   };
