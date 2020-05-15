@@ -45,7 +45,8 @@
     },
     methods: {
       onTabClick(item) {
-
+        // this.toast('hello').show();
+        this.popup({ title: '标题', btn: [{ text: '按钮' }] }).show();
       }
     }
   };

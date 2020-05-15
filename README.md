@@ -51,10 +51,12 @@
     cnpm i --save vue-i18n
 6.模拟数据
     cnpm i mockjs --D
-7. 请求
+7.请求
     cnpm install --save axios
-8. web离线存储
+8.web离线存储
     cnpm install --save localforage
+9. 让 Vue 组件通过 API 方式调用的插件
+    cnpm i -S vue-create-api
 ```
 
 ## 填坑
@@ -66,8 +68,9 @@
     换成Object.prototype.hasOwnProperty.call(getters, key)
 3.epubjs版本过高 无法执行on方法 卸载 重装
     cnpm install epubjs@0.3.71
-4. 没在main.js中引入mock/index.vue 无法取到数据
-5. 忽然电子书就解析不出来了
+4.没在main.js中引入mock/index.vue 无法取到数据
+5.忽然电子书就解析不出来了
+6.Popub注意动画的显示先后顺序 因为父容器有显示的条件 动画不在父容器上
 ```
 
 TODO
